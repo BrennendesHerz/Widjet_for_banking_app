@@ -10,3 +10,10 @@ def mask_account_card(info_account_card: str) -> str:
     else:
         card_info_split = info_account_card.split(" ")
         return f"{' '.join(card_info_split[:-1])} {get_mask_card_number(card_info_split[-1])}"
+
+
+def get_data(input_info: str) -> str:
+    """Возвращает преобразованное значение даты"""
+
+    cut_date = input_info[:10].split("-")
+    return ".".join(cut_date[::-1])
