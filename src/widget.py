@@ -12,7 +12,7 @@ def mask_account_card(info_account_card: str) -> str:
         return f"{' '.join(card_info_split[:-1])} {get_mask_card_number(card_info_split[-1])}"
 
 
-def get_data(input_info: str) -> str:
+def get_date(input_info: str) -> str:
     """Возвращает преобразованное значение даты"""
 
     cut_date = input_info[:10].split("-")

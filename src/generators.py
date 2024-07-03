@@ -1,20 +1,20 @@
-from typing import Iterable
+from typing import Generator
 
 
-def filter_by_currency(transactions_data: list[dict], currency: str) -> Iterable:
+def filter_by_currency(transactions_data: list[dict], currency: str) -> Generator:
     """Поочередно возвращает всю информацию о транзакциях с заданной валютой"""
 
     if isinstance(transactions_data, list):
         if transactions_data:
             for transaction in transactions_data:
                 if "operationAmount" in transaction and "currency" in transaction["operationAmount"]:
-                    if transaction.get("operationAmount").get("currency").get("code") == currency:
+                    if transaction["operationAmount"]["currency"]["code"] == currency:
                         yield transaction
     while True:
         yield "Данные о транзакциях отсутствуют"
 
 
-def transaction_descriptions(transactions_data: list[dict]) -> Iterable:
+def transaction_descriptions(transactions_data: list[dict]) -> Generator:
     """Поочередно возвращает описание транзакций"""
 
     if isinstance(transactions_data, list):
@@ -26,7 +26,7 @@ def transaction_descriptions(transactions_data: list[dict]) -> Iterable:
         yield "Данные о транзакциях отсутствуют"
 
 
-def card_number_generator(init_value: int, final_value: int) -> Iterable:
+def card_number_generator(init_value: int, final_value: int) -> Generator:
     """Генерирует номера карт в заданном диапазоне в формате ХХХХ ХХХХ ХХХХ ХХХХ"""
 
     if 1 <= init_value and init_value <= final_value <= 9999999999999999:
