@@ -1,6 +1,6 @@
 import pytest
 
-from src.widget import get_data, mask_account_card
+from src.widget import get_date, mask_account_card
 
 
 @pytest.mark.parametrize(
@@ -24,5 +24,5 @@ def test_mask_account_card(account_card_num, expected):
         ("2018-06-30T02:08:58.425572", "30.06.2018"),
     ],
 )
-def test_get_data(transaction_info, expected):
-    assert get_data(transaction_info) == expected
+def test_get_date(transaction_info, expected):
+    assert get_date(transaction_info) == expected
