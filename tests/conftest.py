@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def transaction_data():
+def transaction_data() -> list[dict]:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
         {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
@@ -12,7 +12,7 @@ def transaction_data():
 
 
 @pytest.fixture
-def extended_transaction_data():
+def extended_transaction_data() -> list[dict]:
     return [
         {
             "id": 939719570,

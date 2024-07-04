@@ -1,9 +1,11 @@
+from typing import Any
+
 import pytest
 
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
-def test_filter_by_currency_with_correct_arg(extended_transaction_data):
+def test_filter_by_currency_with_correct_arg(extended_transaction_data: list[dict]) -> None:
     generator = filter_by_currency(extended_transaction_data, "USD")
     assert next(generator) == {
         "id": 939719570,
@@ -25,21 +27,24 @@ def test_filter_by_currency_with_correct_arg(extended_transaction_data):
     }
 
 
-def test_filter_by_currency_less_correct_arg(extended_transaction_data):
-    # Передача в функцию отсутствующей валюты
+def test_filter_by_currency_less_correct_currency(extended_transaction_data: list[dict[Any, Any]]) -> None:
     generator = filter_by_currency(extended_transaction_data, "EUR")
     assert next(generator) == "Данные о транзакциях отсутствуют"
 
-    # Передача в функцию пустого списка
-    generator = filter_by_currency([], "USD")
-    assert next(generator) == "Данные о транзакциях отсутствуют"
 
-    # Передача списка без нужных ключей
-    generator = filter_by_currency(["USD", "RUB", "EUR"], "RUB")
-    assert next(generator) == "Данные о транзакциях отсутствуют"
+@pytest.mark.parametrize(
+    "data_list, currency, expected",
+    [
+        ([], "USD", "Данные о транзакциях отсутствуют"),
+        (["USD", "RUB", "EUR"], "RUB", "Данные о транзакциях отсутствуют"),
+    ],
+)
+def test_filter_by_currency_less_correct_arg(data_list: list[dict[Any, Any]], currency: str, expected: str) -> None:
+    generator = filter_by_currency(data_list, currency)
+    assert next(generator) == expected
 
 
-def test_transaction_descriptions_with_correct_arg(extended_transaction_data):
+def test_transaction_descriptions_with_correct_arg(extended_transaction_data: list[dict]) -> None:
     generator = transaction_descriptions(extended_transaction_data)
     assert next(generator) == "Перевод организации"
     assert next(generator) == "Перевод со счета на счет"
@@ -50,12 +55,12 @@ def test_transaction_descriptions_with_correct_arg(extended_transaction_data):
     "data_list, expected",
     [([], "Данные о транзакциях отсутствуют"), (["USD", "RUB", "EUR"], "Данные о транзакциях отсутствуют")],
 )
-def test_transaction_descriptions_less_correct_arg(data_list, expected):
+def test_transaction_descriptions_less_correct_arg(data_list: list[dict[Any, Any]], expected: str) -> None:
     generator = transaction_descriptions(data_list)
     assert next(generator) == expected
 
 
-def test_card_number_generator_with_correct_arg():
+def test_card_number_generator_with_correct_arg() -> None:
     generator = card_number_generator(1, 5)
     assert next(generator) == "0000 0000 0000 0001"
     assert next(generator) == "0000 0000 0000 0002"
@@ -72,6 +77,6 @@ def test_card_number_generator_with_correct_arg():
         (5, 4, "Введены некорректные значения"),
     ],
 )
-def test_card_number_generator_less_correct_arg(start, stop, expected):
+def test_card_number_generator_less_correct_arg(start: int, stop: int, expected: str) -> None:
     generator = card_number_generator(start, stop)
     assert next(generator) == expected
