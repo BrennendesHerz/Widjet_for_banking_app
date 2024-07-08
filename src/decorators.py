@@ -3,6 +3,8 @@ from typing import Any, Callable
 
 
 def log(filename: Any = None) -> Callable:
+    """Декоратор для логирования результатов выполнения функции"""
+
     def wrapper(function: Callable) -> Callable:
         @wraps(function)
         def inner(*args: Any, **kwargs: Any) -> None:
@@ -15,13 +17,13 @@ def log(filename: Any = None) -> Callable:
                 else:
                     print(f"Фуккция {function.__name__} выполнена с результатом {result}")
 
-            except Exception as e:
+            except Exception as err:
                 if filename:
                     with open(filename, "a") as file:
-                        file.write(f"{function.__name__} erroer: {e}. Inputs: {args}, {kwargs}\n")
+                        file.write(f"{function.__name__} erroer: {err}. Inputs: {args}, {kwargs}\n")
 
                 else:
-                    print(f"{function.__name__} erroer: {e}. Inputs: {args}, {kwargs}")
+                    print(f"{function.__name__} erroer: {err}. Inputs: {args}, {kwargs}")
 
         return inner
 
